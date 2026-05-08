@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlorByte Studio — Soluciones Tecnológicas</title>
+<style>
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@300,400,500&display=swap');
+</style>
+<style>
+:root{--bg:#060910;--bg2:#0A0E16;--surface:#111822;--surface2:#18212E;--border:rgba(255,255,255,0.05);--border2:rgba(255,255,255,0.1);--accent:#00E5A0;--accent2:#00B87A;--adim:rgba(0,229,160,0.07);--text:#EEF2F7;--text2:#7A8A9A;--text3:#3A4A5A;--fd:'Clash Display',sans-serif;--fb:'Satoshi',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:2px}
+
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .2s,height .2s}
+#cur-r{position:fixed;width:38px;height:38px;border:1px solid rgba(0,229,160,0.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s,height .18s,background .18s;mix-blend-mode:screen}
+.hovered #cur{width:14px;height:14px}
+.hovered #cur-r{width:58px;height:58px;background:rgba(0,229,160,0.05)}
+
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--accent),#7FFFD4);z-index:200;width:0%;transition:width .08s linear}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;transition:all .4s}
+nav.scrolled{background:rgba(6,9,16,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-weight:700;font-size:17px;color:var(--text);text-decoration:none}
+.logo-svg{animation:spin 10s linear infinite;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-dot{fill:var(--accent);animation:pd 2s ease-in-out infinite}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.4}}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;letter-spacing:.02em;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--accent);color:var(--bg);padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fd);transition:all .25s;white-space:nowrap}
+.nav-cta:hover{background:#00FFB2;transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,229,160,.35)}
+.nav-mob{display:none;background:none;border:none;color:var(--text);cursor:none;font-size:22px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:80px 5% 60px;position:relative;overflow:hidden}
+#hero-c{position:absolute;inset:0;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb1{width:700px;height:700px;background:radial-gradient(circle,rgba(0,229,160,.07),transparent 70%);top:-150px;right:-150px;animation:of 9s ease-in-out infinite}
+.orb2{width:450px;height:450px;background:radial-gradient(circle,rgba(0,184,122,.05),transparent 70%);bottom:-80px;left:5%;animation:of 11s ease-in-out infinite reverse}
+@keyframes of{0%,100%{transform:translate(0,0)}33%{transform:translate(40px,-50px)}66%{transform:translate(-25px,25px)}}
+
+.hero-content{position:relative;z-index:2;max-width:920px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--adim);border:1px solid rgba(0,229,160,.18);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:2rem;opacity:0;animation:sui .7s .2s ease forwards}
+.bdot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pd 1.5s infinite}
+.hero h1{font-family:var(--fd);font-size:clamp(3.2rem,7vw,6rem);font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem;opacity:0;animation:sui .8s .4s ease forwards}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 em{font-style:normal;color:var(--accent);position:relative;display:inline-block}
+.hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:3px;background:var(--accent);opacity:.25;border-radius:2px}
+.hero-sub{font-size:1.1rem;color:var(--text2);max-width:520px;line-height:1.8;margin-bottom:2.5rem;font-weight:300;opacity:0;animation:sui .8s .6s ease forwards}
+.hero-acts{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:sui .8s .8s ease forwards}
+.btn-p{background:var(--accent);color:var(--bg);padding:14px 28px;border-radius:8px;font-family:var(--fd);font-size:14px;font-weight:700;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:9px;letter-spacing:.02em;position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#00FFB2,var(--accent));opacity:0;transition:opacity .3s}
+.btn-p:hover::before{opacity:1}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,229,160,.4)}
+.btn-p span,.btn-p svg{position:relative;z-index:1}
+.btn-p:hover svg{transform:translateX(4px);transition:transform .3s}
+.btn-g{background:transparent;color:var(--text);padding:14px 28px;border-radius:8px;font-family:var(--fd);font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--border2);transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-g:hover{border-color:rgba(0,229,160,.5);color:var(--accent);background:var(--adim)}
+.hero-stats{margin-top:4rem;display:flex;gap:3.5rem;flex-wrap:wrap;opacity:0;animation:sui .8s 1s ease forwards;padding-top:2rem;border-top:1px solid var(--border)}
+.sn{font-family:var(--fd);font-size:2.3rem;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-.02em}
+.sl{font-size:12px;color:var(--text3);margin-top:5px;letter-spacing:.02em}
+
+/* SCROLL HINT */
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text3);font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:0;animation:sui .8s 1.5s ease forwards;z-index:2}
+.s-mouse{width:22px;height:36px;border:1px solid rgba(255,255,255,.15);border-radius:11px;display:flex;justify-content:center;padding-top:6px}
+.s-wheel{width:3px;height:8px;background:var(--accent);border-radius:2px;animation:sd 1.8s ease-in-out infinite}
+@keyframes sd{0%{transform:translateY(0);opacity:1}100%{transform:translateY(10px);opacity:0}}
+
+/* TICKER */
+.ticker-w{padding:14px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:2}
+.ticker{display:flex;animation:tk 28s linear infinite;width:max-content}
+.ti{display:flex;align-items:center;gap:12px;padding:0 2.5rem;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.ti .d{width:3px;height:3px;border-radius:50%;background:var(--accent);flex-shrink:0}
+@keyframes tk{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes sui{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:110px 5%}
+.sl-lbl{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem}
+.sl-lbl::before{content:'';width:20px;height:1px;background:var(--accent)}
+.s-title{font-family:var(--fd);font-size:clamp(1.9rem,3.5vw,2.9rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;margin-bottom:1rem}
+.s-sub{color:var(--text2);font-size:.98rem;max-width:500px;line-height:1.75;font-weight:300}
+
+/* VALUES */
+.vals{background:var(--bg2)}
+.vg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3.5rem}
+.vc{background:var(--bg2);padding:2.5rem 2rem;transition:all .4s;position:relative;overflow:hidden}
+.vc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--adim),transparent);opacity:0;transition:opacity .4s}
+.vc:hover{background:var(--surface)}
+.vc:hover::before{opacity:1}
+.vi{width:48px;height:48px;border-radius:12px;background:var(--adim);border:1px solid rgba(0,229,160,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;transition:all .3s}
+.vc:hover .vi{background:rgba(0,229,160,.15);border-color:rgba(0,229,160,.4);box-shadow:0 0 20px rgba(0,229,160,.2)}
+.vi svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.8}
+.vt{font-family:var(--fd);font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.vd{font-size:13px;color:var(--text2);line-height:1.65}
+
+/* COUNTERS */
+.cnts{background:var(--bg);padding:80px 5%}
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.cc{background:var(--bg);padding:2.5rem 2rem;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(0,229,160,.06),transparent 70%);opacity:0;transition:opacity .4s}
+.cc:hover{background:var(--surface)}
+.cc:hover::before{opacity:1}
+.cn{font-family:var(--fd);font-size:2.8rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:.5rem;letter-spacing:-.02em}
+.cll{font-size:11px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+
+/* VERTICALES */
+.verts{background:var(--bg)}
+.v-tabs{display:flex;gap:0;margin-bottom:3rem;border-radius:12px;overflow:hidden;background:var(--surface);border:1px solid var(--border);flex-wrap:wrap;margin-top:2.5rem}
+.v-tab{flex:1;min-width:140px;padding:16px 12px;background:none;border:none;cursor:none;color:var(--text3);font-family:var(--fd);font-size:11px;font-weight:700;transition:all .3s;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;border-right:1px solid var(--border);letter-spacing:.05em;text-transform:uppercase;position:relative;overflow:hidden}
+.v-tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent);transition:width .35s}
+.v-tab:last-child{border-right:none}
+.v-tab svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;transition:transform .3s}
+.v-tab.active{color:var(--accent);background:var(--adim)}
+.v-tab.active::after{width:60%}
+.v-tab.active svg{transform:scale(1.2)}
+.v-tab:hover:not(.active){color:var(--text);background:rgba(255,255,255,.02)}
+.v-panel{display:none;animation:pi .4s ease}
+.v-panel.active{display:block}
+@keyframes pi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.vh{margin-bottom:2.5rem}
+.vtag{display:inline-flex;align-items:center;gap:6px;background:var(--adim);border:1px solid rgba(0,229,160,.14);color:var(--accent);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:1rem}
+.vh h3{font-family:var(--fd);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;margin-bottom:.6rem;line-height:1.15}
+.vh p{color:var(--text2);font-size:.93rem;max-width:560px;font-weight:300;line-height:1.75}
+
+/* PLANS */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:2rem}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.75rem;position:relative;transition:all .35s}
+.pc:hover{border-color:var(--border2);transform:translateY(-6px)}
+.pc.ft{background:linear-gradient(160deg,var(--surface2) 0%,#0C1C2A 100%);border:1px solid rgba(0,229,160,.25)}
+.pc.ft:hover{box-shadow:0 20px 60px rgba(0,229,160,.1);transform:translateY(-8px)}
+.fb{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--bg);font-size:9px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap;letter-spacing:.08em;text-transform:uppercase;font-family:var(--fd);box-shadow:0 4px 16px rgba(0,229,160,.4)}
+.pt{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem}
+.pn{font-family:var(--fd);font-size:1.25rem;font-weight:800;margin-bottom:.3rem}
+.ptag{font-size:12.5px;color:var(--text2);line-height:1.5;margin-bottom:1.25rem;min-height:38px}
+.pp{font-family:var(--fd);font-size:1.9rem;font-weight:800;line-height:1;margin-bottom:.2rem}
+.pp .cur{font-size:.9rem;font-weight:400;color:var(--text2)}
+.pnote{font-size:10.5px;color:var(--text3);margin-bottom:1.25rem}
+.pdiv{height:1px;background:var(--border);margin:1rem 0}
+.fl{list-style:none;display:flex;flex-direction:column;gap:9px}
+.fl li{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--text2);line-height:1.4}
+.fl li svg{width:14px;height:14px;flex-shrink:0;margin-top:2px}
+.fl li.y{color:var(--text)}
+.fl li.y svg{stroke:var(--accent)}
+.fl li.n{opacity:.3}
+.fl li.n svg{stroke:var(--text3)}
+.pb{display:block;margin-top:1.5rem;text-align:center;padding:11px 16px;border-radius:8px;font-family:var(--fd);font-size:11px;font-weight:700;text-decoration:none;transition:all .3s;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border2);color:var(--text2)}
+.pb:hover{border-color:var(--accent);color:var(--accent);background:var(--adim)}
+.pc.ft .pb{background:var(--accent);color:var(--bg);border-color:transparent}
+.pc.ft .pb:hover{background:#00FFB2;box-shadow:0 8px 28px rgba(0,229,160,.35)}
+
+/* UPSELL / STRAT */
+.ub{display:flex;align-items:flex-start;gap:1rem;background:linear-gradient(135deg,rgba(0,229,160,.04),rgba(0,184,122,.02));border:1px solid rgba(0,229,160,.12);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:2rem;transition:all .3s}
+.ub:hover{border-color:rgba(0,229,160,.25)}
+.ui{width:38px;height:38px;background:var(--adim);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ui svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:2}
+.ub strong{font-family:var(--fd);font-size:13.5px;display:block;margin-bottom:4px}
+.ub p{font-size:12.5px;color:var(--text2);line-height:1.6}
+.sr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;transition:all .3s}
+.sc:hover{border-color:rgba(0,229,160,.2);background:var(--surface2)}
+.sa{font-size:10px;font-weight:700;color:var(--accent);margin-bottom:6px;font-family:var(--fd);letter-spacing:.06em;display:flex;align-items:center;gap:5px}
+.sa svg{width:11px;height:11px;stroke:var(--accent);fill:none;stroke-width:2.5}
+.sc p{font-size:12.5px;color:var(--text2);line-height:1.55;font-style:italic}
+
+/* TIMELINE */
+.proc{background:var(--bg2)}
+.tl{display:flex;flex-direction:column;gap:0;margin-top:3.5rem;position:relative}
+.tl::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent);opacity:.35}
+.ti2{display:flex;gap:2rem;padding:0 0 3rem 0;position:relative;opacity:0;transform:translateX(-20px);transition:all .6s ease}
+.ti2.vis{opacity:1;transform:translateX(0)}
+.tn{width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid rgba(0,229,160,.25);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:12px;font-weight:800;color:var(--accent);flex-shrink:0;position:relative;z-index:1;transition:all .4s}
+.ti2:hover .tn{background:var(--accent);color:var(--bg);box-shadow:0 0 20px rgba(0,229,160,.4)}
+.tb{padding-top:10px;max-width:600px}
+.tt{font-family:var(--fd);font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.td{font-size:13.5px;color:var(--text2);line-height:1.7}
+
+/* TRUST */
+.trust{background:var(--bg)}
+.tgr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:3rem}
+.tca{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all .35s}
+.tca:hover{border-color:rgba(0,229,160,.2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.stars{margin-bottom:.9rem;display:flex;gap:3px}
+.stars span{color:var(--accent);font-size:13px}
+.tq{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem;font-style:italic}
+.tau{display:flex;align-items:center;gap:10px}
+.tav{width:36px;height:36px;border-radius:50%;background:var(--adim);border:1px solid rgba(0,229,160,.2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:11px;font-weight:700;color:var(--accent)}
+.tname{font-weight:500;font-size:13px}
+.tbiz{font-size:11px;color:var(--text3)}
+
+/* CTA */
+.cta{background:var(--bg2);position:relative;overflow:hidden;text-align:center;padding:120px 5%}
+.cta-orb{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(0,229,160,.06),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;animation:of 7s ease-in-out infinite;pointer-events:none}
+.rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.ring{border-radius:50%;border:1px solid rgba(0,229,160,.06);position:absolute;transform:translate(-50%,-50%);animation:rp 3s ease-in-out infinite}
+.ring:nth-child(1){width:280px;height:280px;animation-delay:0s}
+.ring:nth-child(2){width:480px;height:480px;animation-delay:.5s}
+.ring:nth-child(3){width:680px;height:680px;animation-delay:1s}
+@keyframes rp{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:.15;transform:translate(-50%,-50%) scale(1.04)}}
+.cta-c{position:relative;z-index:2;max-width:620px;margin:0 auto}
+.cta-c h2{font-family:var(--fd);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;margin-bottom:1rem;letter-spacing:-.025em;line-height:1.1}
+.cta-c p{color:var(--text2);font-size:1rem;margin-bottom:2.5rem;font-weight:300;line-height:1.75}
+.cta-acts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-wa{background:#25D366;color:white;padding:15px 30px;border-radius:8px;font-family:var(--fd);font-size:14px;font-weight:700;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:10px}
+.btn-wa:hover{background:#22c55e;transform:translateY(-2px);box-shadow:0 14px 36px rgba(37,211,102,.35)}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5rem 5%}
+.fi{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+.flogo{font-family:var(--fd);font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.flinks{display:flex;gap:2rem}
+.flinks a{color:var(--text3);font-size:12px;text-decoration:none;transition:color .2s;letter-spacing:.04em}
+.flinks a:hover{color:var(--accent)}
+.fcp{color:var(--text3);font-size:11px}
+
+/* MOBILE NAV */
+.mobnav{display:none;flex-direction:column;position:fixed;inset:0;z-index:99;background:rgba(6,9,16,.97);backdrop-filter:blur(24px);padding:80px 5% 40px;gap:2rem}
+.mobnav.open{display:flex}
+.mobnav a{color:var(--text);font-family:var(--fd);font-size:1.5rem;font-weight:700;text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1rem;transition:color .2s}
+.mobnav a:hover{color:var(--accent)}
+.close-btn{position:absolute;top:20px;right:5%;background:none;border:none;color:var(--text);font-size:28px;cursor:none}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.rv1{transition-delay:.1s}.rv2{transition-delay:.2s}.rv3{transition-delay:.3s}
+
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}.nav-mob{display:block}
+  .pg{grid-template-columns:1fr}.tgr{grid-template-columns:1fr}
+  .sr{grid-template-columns:1fr}.vg{grid-template-columns:1fr}
+  .cg{grid-template-columns:1fr 1fr}
+  .v-tab{font-size:10px;padding:12px 8px}
+  body{cursor:auto}#cur,#cur-r{display:none}
+}
+@media(max-width:480px){.cg{grid-template-columns:1fr}.v-tabs{flex-direction:column}.hero-stats{gap:1.5rem}}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div id="prog"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <circle class="logo-svg" cx="13" cy="13" r="11" stroke="rgba(0,229,160,0.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <circle cx="13" cy="13" r="5.5" stroke="rgba(0,229,160,0.45)" stroke-width="1"/>
+      <circle class="logo-dot" cx="13" cy="13" r="3"/>
+    </svg>
+    FlorByte Studio
+  </a>
+  <ul class="nav-links">
+    <li><a href="#vals">Qué hacemos</a></li>
+    <li><a href="#verts">Soluciones</a></li>
+    <li><a href="#proc">Proceso</a></li>
+    <li><a href="#cta">Contacto</a></li>
+  </ul>
+  <a href="https://wa.me/5214491234567?text=Hola,%20quiero%20información%20sobre%20sus%20servicios" class="nav-cta" target="_blank">Hablar con un experto</a>
+  <button class="nav-mob" onclick="toggleMob()" aria-label="Menú">☰</button>
+</nav>
+
+<div class="mobnav" id="mobnav">
+  <button class="close-btn" onclick="toggleMob()">✕</button>
+  <a href="#vals" onclick="toggleMob()">Qué hacemos</a>
+  <a href="#verts" onclick="toggleMob()">Soluciones</a>
+  <a href="#proc" onclick="toggleMob()">Proceso</a>
+  <a href="#cta" onclick="toggleMob()" style="color:var(--accent)">Hablar con experto →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <canvas id="hero-c"></canvas>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="bdot"></span>Chihuahua, México · Soluciones garantizadas</div>
+    <h1>
+      <span class="ln">Tecnología que</span>
+      <span class="ln"><em>trabaja</em> por tu</span>
+      <span class="ln">negocio.</span>
+    </h1>
+    <p class="hero-sub">Productos tecnológicos empaquetados con entregables claros, precios fijos y resultados medibles. No horas de freelance — soluciones reales.</p>
+    <div class="hero-acts">
+      <a href="#verts" class="btn-p"><span>Ver soluciones</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#proc" class="btn-g">¿Cómo funciona?</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="sn" data-h="4">0</div><div class="sl">Verticales de soluciones</div></div>
+      <div><div class="sn" data-h="12">0</div><div class="sl">Planes listos para contratar</div></div>
+      <div><div class="sn">48<span style="font-size:1.2rem;color:var(--text2)">h</span></div><div class="sl">SLA de respuesta</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="s-mouse"><div class="s-wheel"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-w">
+  <div class="ticker" id="ticker">
+    <div class="ti"><span class="d"></span>Cámaras & Biométricos</div><div class="ti"><span class="d"></span>Redes Sociales</div><div class="ti"><span class="d"></span>Chatbots con IA</div><div class="ti"><span class="d"></span>Desarrollo Web</div><div class="ti"><span class="d"></span>Automatización</div><div class="ti"><span class="d"></span>WhatsApp Business</div><div class="ti"><span class="d"></span>CRM & Ventas</div><div class="ti"><span class="d"></span>eCommerce</div><div class="ti"><span class="d"></span>Landing Pages</div><div class="ti"><span class="d"></span>Control de Acceso</div>
+    <div class="ti"><span class="d"></span>Cámaras & Biométricos</div><div class="ti"><span class="d"></span>Redes Sociales</div><div class="ti"><span class="d"></span>Chatbots con IA</div><div class="ti"><span class="d"></span>Desarrollo Web</div><div class="ti"><span class="d"></span>Automatización</div><div class="ti"><span class="d"></span>WhatsApp Business</div><div class="ti"><span class="d"></span>CRM & Ventas</div><div class="ti"><span class="d"></span>eCommerce</div><div class="ti"><span class="d"></span>Landing Pages</div><div class="ti"><span class="d"></span>Control de Acceso</div>
+  </div>
+</div>
+
+<!-- VALORES -->
+<section class="vals" id="vals">
+  <div class="rv"><div class="sl-lbl">Por qué FlorByte</div><h2 class="s-title">Productos, no promesas.</h2><p class="s-sub">Cada solución está empaquetada, documentada y respaldada. Sabes exactamente qué recibes antes de firmar.</p></div>
+  <div class="vg">
+    <div class="vc rv rv1"><div class="vi"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="vt">Precio fijo garantizado</div><div class="vd">Sin sorpresas ni cobros extra. El precio que cotizamos es el precio que pagas.</div></div>
+    <div class="vc rv rv2"><div class="vi"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="vt">Entregables claros</div><div class="vd">Cada plan especifica exactamente qué incluye. Sin letra pequeña, sin ambigüedades.</div></div>
+    <div class="vc rv rv3"><div class="vi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="vt">Tiempos reales</div><div class="vd">Fechas de entrega comprometidas desde el inicio. Tu proyecto no se queda en pausa.</div></div>
+  </div>
+</section>
+
+<!-- COUNTERS -->
+<section class="cnts">
+  <div class="cg">
+    <div class="cc rv"><div class="cn"><span style="font-size:1.8rem">🚀</span></div><div class="cll">Listos para escalar contigo</div></div>
+    <div class="cc rv rv1"><div class="cn"><span class="cnt" data-t="40" data-s="%">0</span></div><div class="cll">Aumento promedio en ventas</div></div>
+    <div class="cc rv rv2"><div class="cn"><span class="cnt" data-t="24" data-s="h">0</span></div><div class="cll">Para recibir tu propuesta</div></div>
+    <div class="cc rv rv3"><div class="cn"><span class="cnt" data-t="98" data-s="%">0</span></div><div class="cll">Clientes que renuevan</div></div>
+  </div>
+</section>
+
+<!-- SOLUCIONES -->
+<section class="verts" id="verts">
+  <div class="rv"><div class="sl-lbl">Nuestros Servicios</div><h2 class="s-title">4 áreas de soluciones.<br>Todo en un solo lugar.</h2><p class="s-sub">Organizamos nuestros servicios en 4 especialidades. Cada una tiene 3 niveles de inversión — Esencial, Pro y Elite — para que entres al precio que hoy te conviene y crezcas cuando estés listo. Haz clic en el área que te interesa.</p></div>
+  <div class="v-tabs">
+    <button class="v-tab active" onclick="swV(0)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Infraestructura</button>
+    <button class="v-tab" onclick="swV(1)"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Marketing</button>
+    <button class="v-tab" onclick="swV(2)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Desarrollo Web</button>
+    <button class="v-tab" onclick="swV(3)"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Software & IA</button>
+  </div>
+
+  <!-- V1 -->
+  <div class="v-panel active" id="vp0">
+    <div class="vh"><div class="vtag">📷 Área 1 de 4 — Cámaras, Biométricos y Seguridad Física</div><h3>Protege lo que más importa:<br>tu negocio y tu gente.</h3><p>Desde la primera cámara hasta vigilancia 24/7 con IA. Instalación incluida, sin sorpresas.</p></div>
+    <div class="pg">
+      <div class="pc">
+        <div class="pt">Nivel 01</div><div class="pn">Esencial</div><div class="ptag">Seguridad básica operando desde el primer día.</div>
+        <div class="pp">$8,500 <span class="cur">MXN</span></div><div class="pnote">Pago único · Instalación incluida</div><div class="pdiv"></div>
+        <ul class="fl">
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>2 cámaras IP Full HD</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Grabación local 7 días (NVR)</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Acceso remoto desde celular</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instalación y configuración completa</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Capacitación al usuario</li>
+          <li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Control de acceso biométrico</li>
+          <li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Alertas automáticas</li>
+        </ul><a href="#cta" class="pb">Contratar Esencial →</a>
+      </div>
+      <div class="pc ft">
+        <div class="fb">Más popular</div>
+        <div class="pt">Nivel 02</div><div class="pn">Pro</div><div class="ptag">Vigilancia completa con control de quién entra y cuándo.</div>
+        <div class="pp">$18,900 <span class="cur">MXN</span></div><div class="pnote">Pago único · Instalación incluida</div><div class="pdiv"></div>
+        <ul class="fl">
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>4 cámaras IP exterior/interior</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Grabación 30 días + respaldo nube</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Lector biométrico (huella + tarjeta)</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Registro de asistencia con reportes</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Alertas por movimiento vía WhatsApp</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Panel de administración web</li>
+          <li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Monitoreo 24/7 por operador</li>
+        </ul><a href="#cta" class="pb">Contratar Pro →</a>
+      </div>
+      <div class="pc">
+        <div class="pt">Nivel 03</div><div class="pn">Elite</div><div class="ptag">Sistema inteligente, monitoreado, sin intervención manual.</div>
+        <div class="pp">$38,500 <span class="cur">MXN</span></div><div class="pnote">+ $1,990/mes monitoreo + mantenimiento gestionado</div><div class="pdiv"></div>
+        <ul class="fl">
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Hasta 8 cámaras con detección IA</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Grabación 90 días en nube privada</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Biométrico + reconocimiento facial</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Integración con nómina y RRHH</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monitoreo 24/7 con respuesta remota</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dashboard ejecutivo con métricas</li>
+          <li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SLA soporte 4 horas hábiles</li>
+        </ul><a href="#cta" class="pb">Contratar Elite →</a>
+      </div>
+    </div>
+    <div class="ub"><div class="ui"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><strong>Combínalo con Software & IA (V4)</strong><p>Conecta tu biométrico al módulo de gestión de personal. Reportes de nómina automáticos, sin captura manual.</p></div></div>
+    <div class="sr"><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Esencial → Pro</div><p>"¿Sabes quién llegó tarde esta semana? Con el plan Pro, tu sistema te lo dice solo."</p></div><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Pro → Software IA</div><p>"Ya tienes la infraestructura. Añade el módulo de asistencia y conecta directo con tu nómina."</p></div></div>
+  </div>
+
+  <!-- V2 -->
+  <div class="v-panel" id="vp1">
+    <div class="vh"><div class="vtag">📱 Área 2 de 4 — Redes Sociales y Contenido Digital</div><h3>Tu negocio existe en línea,<br>o no existe.</h3><p>Construimos la presencia que genera confianza, atrae clientes y convierte seguidores en compradores. Cada mes, sin excusas.</p></div>
+    <div class="pg">
+      <div class="pc"><div class="pt">Nivel 01</div><div class="pn">Esencial</div><div class="ptag">Presencia constante y profesional para generar confianza mes a mes.</div><div class="pp">$4,900 <span class="cur">MXN/mes</span></div><div class="pnote">Contrato mínimo 3 meses</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>6 publicaciones/mes (calidad sobre cantidad)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Diseño gráfico con tu identidad de marca</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Copywriting estratégico por publicación</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Optimización de perfil (bio + highlights)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Reporte mensual de alcance y crecimiento</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reels de video</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Pauta publicitaria</li></ul><a href="#cta" class="pb">Contratar Esencial →</a></div>
+      <div class="pc ft"><div class="fb">Más popular</div><div class="pt">Nivel 02</div><div class="pn">Pro</div><div class="ptag">Autoridad de marca que conecta y hace crecer tu comunidad activamente.</div><div class="pp">$8,500 <span class="cur">MXN/mes</span></div><div class="pnote">Contrato mínimo 3 meses</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>10 publicaciones/mes + Stories diarias</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>3 Reels editados por mes</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Identidad visual de marca incluida</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Estrategia de hashtags y tendencias</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Gestión de comentarios y DMs</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Google Business Profile optimizado</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Pauta publicitaria</li></ul><a href="#cta" class="pb">Contratar Pro →</a></div>
+      <div class="pc"><div class="pt">Nivel 03</div><div class="pn">Elite</div><div class="ptag">Ecosistema digital completo: marca, comunidad, pauta y resultados medibles.</div><div class="pp">$15,900 <span class="cur">MXN/mes</span></div><div class="pnote">Pauta publicitaria no incluida</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>14 publicaciones/mes multi-plataforma</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>5 Reels profesionales/mes (1 por semana)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Estrategia trimestral documentada</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Gestión Meta Ads + Google Ads</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Brand kit completo + manual de marca</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sesión fotográfica bimestral</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dashboard de métricas en tiempo real</li></ul><a href="#cta" class="pb">Contratar Elite →</a></div>
+    </div>
+    <div class="ub"><div class="ui"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><strong>Cierra el ciclo con Web + Chatbot</strong><p>Landing Page (V3) + Chatbot WhatsApp (V4) convierten seguidores en ventas, incluso de madrugada. Paquete Ecosistema: 15% de descuento.</p></div></div>
+    <div class="sr"><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Esencial → Pro</div><p>"El algoritmo premia los Reels 3x más que una imagen. Un video puede triplicar tu alcance este mes."</p></div><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Redes → Web + Bot</div><p>"Tu Instagram crece. ¿A dónde mandas a los interesados? Ciérralo con una landing que convierta."</p></div></div>
+  </div>
+
+  <!-- V3 -->
+  <div class="v-panel" id="vp2">
+    <div class="vh"><div class="vtag">🌐 Área 3 de 4 — Páginas Web y Tiendas en Línea</div><h3>Tu mejor vendedor trabaja<br>24/7 y nunca llega tarde.</h3><p>Sitios que convierten visitas en clientes. Diseño, velocidad y SEO en un solo paquete, precio fijo.</p></div>
+    <div class="pg">
+      <div class="pc"><div class="pt">Nivel 01</div><div class="pn">Esencial</div><div class="ptag">Tu primera impresión profesional en internet, lista en días.</div><div class="pp">$9,900 <span class="cur">MXN</span></div><div class="pnote">Pago único · Entrega 5–7 días</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Landing de conversión (hasta 6 secciones)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Diseño responsive móvil + escritorio</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Formulario + botón WhatsApp</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Velocidad de carga optimizada</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dominio y hosting primer año</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>SEO técnico avanzado</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Blog o tienda en línea</li></ul><a href="#cta" class="pb">Contratar Esencial →</a></div>
+      <div class="pc ft"><div class="fb">Más popular</div><div class="pt">Nivel 02</div><div class="pn">Pro</div><div class="ptag">Sitio corporativo que posiciona tu marca y aparece en Google.</div><div class="pp">$19,900 <span class="cur">MXN</span></div><div class="pnote">Pago único · Entrega 10–15 días</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sitio hasta 8 secciones/páginas</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SEO técnico on-page completo</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Blog integrado (CMS editable)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Google Analytics + Search Console</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>PageSpeed 90+ garantizado</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SSL + seguridad configurada</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>eCommerce</li></ul><a href="#cta" class="pb">Contratar Pro →</a></div>
+      <div class="pc"><div class="pt">Nivel 03</div><div class="pn">Elite</div><div class="ptag">Tu tienda en línea que vende mientras duermes.</div><div class="pp">$38,500 <span class="cur">MXN</span></div><div class="pnote">Pago único · Entrega 25–35 días</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>eCommerce hasta 100 productos</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pasarela de pago (Stripe/MercadoPago)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Gestión de inventario y pedidos</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SEO avanzado + sitemap automático</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Integración WhatsApp Business</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Panel de métricas de ventas</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Capacitación + manual de uso</li></ul><a href="#cta" class="pb">Contratar Elite →</a></div>
+    </div>
+    <div class="ub"><div class="ui"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><strong>Un sitio sin tráfico es una vitrina vacía</strong><p>Combina con Redes Sociales (V2) + Chatbot IA (V4). Paquete Ecosistema Digital: 15% de descuento al contratar los 3.</p></div></div>
+    <div class="sr"><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Landing → Sitio Pro</div><p>"Tu landing convierte bien. Posiciónate en Google y empieza a recibir tráfico orgánico gratuito."</p></div><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Web → Bot + Redes</div><p>Paquete Ecosistema Digital — web + redes + chatbot con 15% de descuento al contratar los tres.</p></div></div>
+  </div>
+
+  <!-- V4 -->
+  <div class="v-panel" id="vp3">
+    <div class="vh"><div class="vtag">🤖 Área 4 de 4 — Software, Chatbots con IA y Automatización</div><h3>La tecnología que trabaja<br>mientras tú atiendes.</h3><p>Sistemas de reserva inteligentes, chatbots con IA y automatizaciones que eliminan el trabajo repetitivo.</p></div>
+    <div class="pg">
+      <div class="pc"><div class="pt">Nivel 01</div><div class="pn">Esencial</div><div class="ptag">Tu negocio que se agenda solo, sin llamadas ni confusiones.</div><div class="pp">$7,500 <span class="cur">MXN</span></div><div class="pnote">Pago único + $590/mes plataforma</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sistema de reservas online</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Recordatorios automáticos por WhatsApp</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Calendario de citas por colaborador</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Panel de administración web</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Confirmaciones y cancelaciones auto</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Chatbot con IA</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>CRM integrado</li></ul><a href="#cta" class="pb">Contratar Esencial →</a></div>
+      <div class="pc ft"><div class="fb">Más popular</div><div class="pt">Nivel 02</div><div class="pn">Pro</div><div class="ptag">Un asistente con IA que atiende, agenda y califica clientes las 24 horas.</div><div class="pp">$18,000 <span class="cur">MXN</span></div><div class="pnote">Pago único + $1,690/mes plataforma</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Chatbot con IA entrenado en tu negocio</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Integración WhatsApp Business</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Reservas + chatbot unificado</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>CRM básico (pipeline de prospectos)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Respuestas automáticas a FAQ</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Transferencia a humano cuando necesario</li><li class="n"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Automatizaciones avanzadas</li></ul><a href="#cta" class="pb">Contratar Pro →</a></div>
+      <div class="pc"><div class="pt">Nivel 03</div><div class="pn">Elite</div><div class="ptag">Tu negocio en piloto automático: ventas, soporte y operaciones.</div><div class="pp">$35,000 <span class="cur">MXN</span></div><div class="pnote">Pago único + $3,500/mes plataforma</div><div class="pdiv"></div><ul class="fl"><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>IA + flujos de venta automatizados</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>CRM completo con automatizaciones</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-canal (WA, IG, web, email)</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Seguimiento automático de prospectos</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Reportes de conversión y embudo</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Módulo de gestión de personal</li><li class="y"><svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Soporte prioritario + evoluciones mensuales</li></ul><a href="#cta" class="pb">Contratar Elite →</a></div>
+    </div>
+    <div class="ub"><div class="ui"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><strong>Alimenta el embudo que tu bot ya convierte</strong><p>Redes Sociales (V2) trae más prospectos al embudo. Landing Page (V3) como destino principal de campañas.</p></div></div>
+    <div class="sr"><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Reservas → Bot Pro</div><p>"Tu sistema agenda citas, pero ¿quién contesta a las 11pm? La IA lo hace por ti."</p></div><div class="sc"><div class="sa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Bot → CRM Elite</div><p>"Ya tienes el chatbot. Ahora cada lead queda registrado, calificado y seguido automáticamente."</p></div></div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="proc" id="proc">
+  <div class="rv"><div class="sl-lbl">Cómo funciona</div><h2 class="s-title">De la cotización al<br>resultado en 4 pasos.</h2><p class="s-sub">Sin reuniones infinitas, sin sorpresas. Un proceso claro desde el día uno.</p></div>
+  <div class="tl">
+    <div class="ti2"><div class="tn">01</div><div class="tb"><div class="tt">Diagnóstico express — 30 minutos</div><div class="td">Entendemos tu negocio, tus objetivos y el plan que más te conviene. Sin presión, sin compromiso. Solo claridad sobre qué necesitas y cuánto cuesta.</div></div></div>
+    <div class="ti2"><div class="tn">02</div><div class="tb"><div class="tt">Propuesta y aprobación — 24 horas</div><div class="td">Recibes una propuesta detallada con entregables específicos, cronograma y precio fijo. Sin letra pequeña.</div></div></div>
+    <div class="ti2"><div class="tn">03</div><div class="tb"><div class="tt">Desarrollo y entrega — tiempo pactado</div><div class="td">Nuestro equipo ejecuta. Recibes actualizaciones constantes y visibilidad total del avance hasta la entrega final.</div></div></div>
+    <div class="ti2" style="padding-bottom:0"><div class="tn">04</div><div class="tb"><div class="tt">Soporte y escala — indefinido</div><div class="td">Acompañamiento post-entrega y camino claro para escalar. No eres un proyecto cerrado — eres un cliente que crece con nosotros.</div></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALES -->
+<section class="trust">
+  <div class="rv"><div class="sl-lbl">Resultados reales</div><h2 class="s-title">Lo que dicen<br>nuestros clientes.</h2></div>
+  <div class="tgr">
+    <div class="tca rv rv1"><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="tq">"Antes perdíamos reservas porque no teníamos a alguien contestando WhatsApp a toda hora. Ahora el bot lo hace y nuestras citas semanales aumentaron casi un 40%."</p><div class="tau"><div class="tav">CM</div><div><div class="tname">Carlos M.</div><div class="tbiz">Barbería Prime, Chihuahua</div></div></div></div>
+    <div class="tca rv rv2"><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="tq">"Pensé que tener cámaras era un gasto. Resultó ser una inversión. En el primer mes descubrí quién llegaba tarde y optimicé los turnos. Ya se pagó solo."</p><div class="tau"><div class="tav">LR</div><div><div class="tname">Laura R.</div><div class="tbiz">Distribuidora LogiPack</div></div></div></div>
+    <div class="tca rv rv3"><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="tq">"En 3 meses pasé de 800 a 4,200 seguidores. Más importante: empecé a recibir clientes que me encontraron en Instagram. No esperaba esos resultados tan rápido."</p><div class="tau"><div class="tav">AP</div><div><div class="tname">Ana P.</div><div class="tbiz">Estudio Pilates Forma</div></div></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="cta-orb"></div>
+  <div class="rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+  <div class="cta-c rv">
+    <div class="sl-lbl" style="justify-content:center">Hablemos hoy</div>
+    <h2>¿Listo para dejar de improvisar y empezar a escalar?</h2>
+    <p>Cuéntanos qué necesitas. En 24 horas tendrás una propuesta personalizada con precio fijo y entregables claros.</p>
+    <div class="cta-acts">
+      <a href="https://wa.me/5214491234567?text=Hola,%20quiero%20una%20cotización%20de%20FlorByte%20Studio" class="btn-wa" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escribir por WhatsApp
+      </a>
+      <a href="mailto:hola@florbytestudio.com" class="btn-g">hola@florbytestudio.com</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi">
+    <div class="flogo"><svg width="20" height="20" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="5" stroke="rgba(0,229,160,.4)" stroke-width="1"/><circle cx="13" cy="13" r="3" fill="var(--accent)"/></svg>FlorByte Studio</div>
+    <div class="flinks"><a href="#vals">Qué hacemos</a><a href="#verts">Soluciones</a><a href="#proc">Proceso</a><a href="#cta">Contacto</a></div>
+    <div class="fcp">© 2025 FlorByte Studio · Chihuahua, México</div>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovered'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovered'))});
+
+// PROGRESS + NAV
+window.addEventListener('scroll',()=>{
+  const p=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;
+  document.getElementById('prog').style.width=p+'%';
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// PARTICLES CANVAS
+const canvas=document.getElementById('hero-c'),ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight}
+resize();window.addEventListener('resize',()=>{resize();init()});
+function Pt(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.4+.4;this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;this.o=Math.random()*.35+.08}
+function init(){pts=[];for(let i=0;i<90;i++)pts.push(new Pt())}
+init();
+let pmx=W/2,pmy=H/2;
+document.addEventListener('mousemove',e=>{pmx=e.clientX;pmy=e.clientY});
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,229,160,${p.o})`;ctx.fill();
+    pts.forEach(p2=>{const dx=p.x-p2.x,dy=p.y-p2.y,d=Math.sqrt(dx*dx+dy*dy);if(d<110&&d>0){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.strokeStyle=`rgba(0,229,160,${.05*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}});
+    const dx=p.x-pmx,dy=p.y-pmy,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<130){p.vx+=dx/d*.025;p.vy+=dy/d*.025}
+    p.vx*=.992;p.vy*=.992;
+  });
+  requestAnimationFrame(draw);
+})();
+
+// MOBILE NAV
+function toggleMob(){document.getElementById('mobnav').classList.toggle('open')}
+
+// VERTICAL TABS
+function swV(i){
+  document.querySelectorAll('.v-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.v-panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+
+// REVEAL
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// TIMELINE
+const to=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.2});
+document.querySelectorAll('.ti2').forEach((el,i)=>{el.style.transitionDelay=i*.15+'s';to.observe(el)});
+
+// COUNTERS
+function animCnt(el,target,suf){
+  let st=null;
+  (function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1800,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target)+suf;if(p<1)requestAnimationFrame(step)})(0);
+}
+const co=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){animCnt(x.target,+x.target.dataset.t,x.target.dataset.s||'');co.unobserve(x.target)}})},{threshold:.5});
+document.querySelectorAll('.cnt').forEach(el=>co.observe(el));
+
+// HERO COUNTERS
+const ho=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){animCnt(x.target,+x.target.dataset.h,'');ho.unobserve(x.target)}})},{threshold:.5});
+document.querySelectorAll('[data-h]').forEach(el=>ho.observe(el));
+</script>
+</body>
+</html>
