@@ -214,6 +214,29 @@ section{padding:110px 5%}
 .btn-wa{background:#25D366;color:white;padding:15px 30px;border-radius:8px;font-family:var(--fd);font-size:14px;font-weight:700;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:10px}
 .btn-wa:hover{background:#22c55e;transform:translateY(-2px);box-shadow:0 14px 36px rgba(37,211,102,.35)}
 
+/* PORTFOLIO */
+.portfolio{background:var(--bg2)}
+.port-group{margin-top:3.5rem}
+.port-group-lbl{margin-bottom:1.5rem}
+.port-tag{display:inline-flex;align-items:center;gap:8px;background:var(--adim);border:1px solid rgba(0,229,160,.14);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:20px}
+.port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.port-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .35s;position:relative;overflow:hidden}
+.port-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--adim),transparent);opacity:0;transition:opacity .4s}
+.port-card:hover{border-color:rgba(0,229,160,.25);transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.port-card:hover::before{opacity:1}
+.port-emoji{font-size:2rem;margin-bottom:1rem;display:block}
+.port-plat{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.port-card h3{font-family:var(--fd);font-size:1.35rem;font-weight:800;margin-bottom:.6rem;position:relative;z-index:1}
+.port-card p{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem;position:relative;z-index:1}
+.port-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;position:relative;z-index:1}
+.port-chips span{background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.12);color:var(--text2);font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+.port-badge{position:absolute;top:1.25rem;right:1.25rem;background:var(--accent);color:var(--bg);font-size:9px;font-weight:800;padding:4px 11px;border-radius:20px;letter-spacing:.08em;text-transform:uppercase;font-family:var(--fd)}
+.port-saas{background:linear-gradient(160deg,var(--surface2) 0%,#0C1C2A 100%);border-color:rgba(0,229,160,.15)}
+.port-demo{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:var(--bg);padding:10px 20px;border-radius:8px;font-family:var(--fd);font-size:12px;font-weight:700;text-decoration:none;transition:all .3s;letter-spacing:.04em;position:relative;z-index:1}
+.port-demo:hover{background:#00FFB2;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,229,160,.35)}
+.port-demo svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .25s}
+.port-demo:hover svg{transform:translateX(3px)}
+
 /* FOOTER */
 footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5rem 5%}
 .fi{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
@@ -241,6 +264,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   .sr{grid-template-columns:1fr}.vg{grid-template-columns:1fr}
   .cg{grid-template-columns:1fr 1fr}
   .v-tab{font-size:10px;padding:12px 8px}
+  .port-grid{grid-template-columns:1fr}
   body{cursor:auto}#cur,#cur-r{display:none}
 }
 @media(max-width:480px){.cg{grid-template-columns:1fr}.v-tabs{flex-direction:column}.hero-stats{gap:1.5rem}}
@@ -265,9 +289,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
     <li><a href="#vals">Qué hacemos</a></li>
     <li><a href="#verts">Soluciones</a></li>
     <li><a href="#proc">Proceso</a></li>
+    <li><a href="#portfolio">Portafolio</a></li>
     <li><a href="#cta">Contacto</a></li>
   </ul>
-  <a href="https://wa.me/5214491234567?text=Hola,%20quiero%20información%20sobre%20sus%20servicios" class="nav-cta" target="_blank">Hablar con un experto</a>
+  <a href="https://wa.me/525660012374?text=Hola,%20quiero%20información%20sobre%20sus%20servicios" class="nav-cta" target="_blank">Hablar con un experto</a>
   <button class="nav-mob" onclick="toggleMob()" aria-label="Menú">☰</button>
 </nav>
 
@@ -276,6 +301,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   <a href="#vals" onclick="toggleMob()">Qué hacemos</a>
   <a href="#verts" onclick="toggleMob()">Soluciones</a>
   <a href="#proc" onclick="toggleMob()">Proceso</a>
+  <a href="#portfolio" onclick="toggleMob()">Portafolio</a>
   <a href="#cta" onclick="toggleMob()" style="color:var(--accent)">Hablar con experto →</a>
 </div>
 
@@ -436,7 +462,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
 <section class="proc" id="proc">
   <div class="rv"><div class="sl-lbl">Cómo funciona</div><h2 class="s-title">De la cotización al<br>resultado en 4 pasos.</h2><p class="s-sub">Sin reuniones infinitas, sin sorpresas. Un proceso claro desde el día uno.</p></div>
   <div class="tl">
-    <div class="ti2"><div class="tn">01</div><div class="tb"><div class="tt">Diagnóstico express — 30 minutos</div><div class="td">Entendemos tu negocio, tus objetivos y el plan que más te conviene. Sin presión, sin compromiso. Solo claridad sobre qué necesitas y cuánto cuesta.</div></div></div>
+    <div class="ti2"><div class="tn">01</div><div class="tb"><div class="tt">Diagnóstico express — 60 minutos</div><div class="td">Entendemos tu negocio, tus objetivos y el plan que más te conviene. Sin presión, sin compromiso. Solo claridad sobre qué necesitas y cuánto cuesta.</div></div></div>
     <div class="ti2"><div class="tn">02</div><div class="tb"><div class="tt">Propuesta y aprobación — 24 horas</div><div class="td">Recibes una propuesta detallada con entregables específicos, cronograma y precio fijo. Sin letra pequeña.</div></div></div>
     <div class="ti2"><div class="tn">03</div><div class="tb"><div class="tt">Desarrollo y entrega — tiempo pactado</div><div class="td">Nuestro equipo ejecuta. Recibes actualizaciones constantes y visibilidad total del avance hasta la entrega final.</div></div></div>
     <div class="ti2" style="padding-bottom:0"><div class="tn">04</div><div class="tb"><div class="tt">Soporte y escala — indefinido</div><div class="td">Acompañamiento post-entrega y camino claro para escalar. No eres un proyecto cerrado — eres un cliente que crece con nosotros.</div></div></div>
@@ -453,6 +479,83 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   </div>
 </section>
 
+<!-- PORTAFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="rv">
+    <div class="sl-lbl">Portafolio</div>
+    <h2 class="s-title">Proyectos reales,<br>en producción.</h2>
+    <p class="s-sub">Apps y sistemas que ya operan. Código propio, entregado y funcionando.</p>
+  </div>
+
+  <!-- Apps Móviles -->
+  <div class="port-group rv">
+    <div class="port-group-lbl"><span class="port-tag">📱 Aplicaciones Móviles</span></div>
+    <div class="port-grid">
+
+      <!-- OnceOnce -->
+      <div class="port-card rv rv1">
+        <span class="port-emoji">👁️</span>
+        <div class="port-plat">iOS &amp; Android</div>
+        <h3>OnceOnce</h3>
+        <p>App de agenda y expediente médico para una empresa de optometría a domicilio. El equipo llega en su camioneta equipada: la app organiza las visitas del día, agenda citas de cada paciente y guarda el historial completo de graduaciones.</p>
+        <div class="port-chips">
+          <span>Agenda médica</span><span>Historial clínico</span><span>Rutas a domicilio</span><span>Pacientes</span>
+        </div>
+      </div>
+
+      <!-- ConnectCompany -->
+      <div class="port-card rv rv2">
+        <span class="port-emoji">🚗</span>
+        <div class="port-plat">iOS &amp; Android</div>
+        <h3>ConnectCompany</h3>
+        <p>Plataforma privada de transporte empresarial — como Uber, pero exclusiva. El conductor tiene convenios con empresas y recoge a los empleados al salir del trabajo. Desde su panel ve quién solicitó viaje, qué unidad lo atiende y el historial por empresa.</p>
+        <div class="port-chips">
+          <span>Transporte B2B</span><span>Gestión de viajes</span><span>Panel conductor</span><span>Convenios</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sistemas SaaS -->
+  <div class="port-group rv">
+    <div class="port-group-lbl"><span class="port-tag">☁️ Sistemas SaaS — disponibles para tu negocio</span></div>
+    <div class="port-grid">
+
+      <!-- SaaS 1 -->
+      <div class="port-card port-saas rv rv1">
+        <div class="port-badge">En venta</div>
+        <span class="port-emoji">🔧</span>
+        <div class="port-plat">Web · SaaS</div>
+        <h3>Nombre del SaaS 1</h3>
+        <p>Descripción del sistema SaaS 1. Actualiza este texto con lo que hace tu producto, a quién va dirigido y cuál es el beneficio principal.</p>
+        <div class="port-chips">
+          <span>Tag 1</span><span>Tag 2</span><span>Tag 3</span>
+        </div>
+        <a href="#" class="port-demo" target="_blank">
+          Ver demo <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- SaaS 2 -->
+      <div class="port-card port-saas rv rv2">
+        <div class="port-badge">En venta</div>
+        <span class="port-emoji">📊</span>
+        <div class="port-plat">Web · SaaS</div>
+        <h3>Nombre del SaaS 2</h3>
+        <p>Descripción del sistema SaaS 2. Actualiza este texto con lo que hace tu producto, a quién va dirigido y cuál es el beneficio principal.</p>
+        <div class="port-chips">
+          <span>Tag 1</span><span>Tag 2</span><span>Tag 3</span>
+        </div>
+        <a href="#" class="port-demo" target="_blank">
+          Ver demo <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta" id="cta">
   <div class="cta-orb"></div>
@@ -462,11 +565,11 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
     <h2>¿Listo para dejar de improvisar y empezar a escalar?</h2>
     <p>Cuéntanos qué necesitas. En 24 horas tendrás una propuesta personalizada con precio fijo y entregables claros.</p>
     <div class="cta-acts">
-      <a href="https://wa.me/5214491234567?text=Hola,%20quiero%20una%20cotización%20de%20FlorByte%20Studio" class="btn-wa" target="_blank">
+      <a href="https://wa.me/525660012374?text=Hola,%20quiero%20una%20cotización%20de%20FlorByte%20Studio" class="btn-wa" target="_blank">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Escribir por WhatsApp
       </a>
-      <a href="mailto:hola@florbytestudio.com" class="btn-g">hola@florbytestudio.com</a>
+      <a href="mailto:florbytestudio@gmail.com" class="btn-g">florbytestudio@gmail.com</a>
     </div>
   </div>
 </section>
@@ -475,7 +578,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:2.5r
   <div class="fi">
     <div class="flogo"><svg width="20" height="20" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="5" stroke="rgba(0,229,160,.4)" stroke-width="1"/><circle cx="13" cy="13" r="3" fill="var(--accent)"/></svg>FlorByte Studio</div>
     <div class="flinks"><a href="#vals">Qué hacemos</a><a href="#verts">Soluciones</a><a href="#proc">Proceso</a><a href="#cta">Contacto</a></div>
-    <div class="fcp">© 2025 FlorByte Studio · Chihuahua, México</div>
+    <div class="fcp">© 2026 FlorByte Studio · Chihuahua, México</div>
   </div>
 </footer>
 
